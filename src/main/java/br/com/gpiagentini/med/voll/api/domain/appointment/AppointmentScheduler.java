@@ -24,7 +24,7 @@ public class AppointmentScheduler {
     @Autowired
     private List<Validator> validators; // Look for all the classes that implements this interface
 
-    public void schedule(AppointmentData data) {
+    public AppointmentDetailsData schedule(AppointmentData data) {
         if (data.doctorId() != null && !doctorRepository.existsById(data.doctorId())) {
             throw new ValidationException("Doctor not found.");
         }
@@ -39,6 +39,7 @@ public class AppointmentScheduler {
         var doctor = chooseDoctor(data);
         var appointment = new Appointment(null, doctor, patient, data.date());
         appointmentRepository.save(appointment);
+        return new AppointmentDetailsData(appointment);
     }
 
     private Doctor chooseDoctor(AppointmentData data) {
