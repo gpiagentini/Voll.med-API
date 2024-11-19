@@ -1,6 +1,9 @@
 package br.com.gpiagentini.med.voll.api.infraestructure.security;
 
 import br.com.gpiagentini.med.voll.api.infraestructure.filters.AuthenticationFilter;
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,6 +31,7 @@ public class SecurityConfigurations {
         httpSecurity.csrf(CsrfConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorization -> {
+                    authorization.requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll();
                     authorization.requestMatchers(HttpMethod.POST, "/login").permitAll();
                     authorization.anyRequest().authenticated();
                 })
